@@ -458,6 +458,8 @@
         gap: 5px;
         font-weight: normal;
         cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 
     .form-actions {
@@ -572,10 +574,32 @@
             padding: 8px;
         }
         
-        .filter-box label {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
+    .filter-box label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+    
+    .date-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .date-options label {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 6px;
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .date-options label:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    
+    .date-options input[type="radio"]:checked + span {
+        font-weight: bold;
+    }
         
         .nav-tabs {
             flex-direction: row;
@@ -731,14 +755,14 @@
                         <div class="form-group">
                             <label for="postDate">등록일자</label>
                             <div class="date-options">
-                                <label>
-                                    <input type="radio" name="dateOption" value="auto" checked>
-                                    자동
-                                </label>
-                                <label>
-                                    <input type="radio" name="dateOption" value="manual">
-                                    날짜 선택
-                                </label>
+                            <label>
+                                <input type="radio" name="dateOption" value="auto" checked>
+                                <span>자동</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="dateOption" value="manual">
+                                <span>날짜 선택</span>
+                            </label>
                             </div>
                             <input type="datetime-local" id="postDate" disabled>
                         </div>
