@@ -40,38 +40,57 @@ async function initDatabase() {
 // 데이터베이스 저장 (Vercel Blob)
 async function saveDatabase() {
   try {
+    console.log('=== Blob 저장 시작 ===');
+    console.log('저장할 게시물 수:', posts.length);
+    console.log('게시물 데이터:', JSON.stringify(posts, null, 2));
+    
     const data = JSON.stringify(posts, null, 2);
+    console.log('JSON 데이터 크기:', data.length, 'bytes');
+    
     const blob = await put('osuda-data.json', data, {
       access: 'public',
       contentType: 'application/json'
     });
-    console.log('데이터가 Vercel Blob에 저장되었습니다:', blob.url);
-    console.log('현재 게시물 수:', posts.length);
+    
+    console.log('✅ 데이터가 Vercel Blob에 저장되었습니다!');
+    console.log('Blob URL:', blob.url);
+    console.log('Blob 크기:', blob.size, 'bytes');
+    console.log('=== Blob 저장 완료 ===');
   } catch (error) {
-    console.error('Blob 저장 오류:', error.message);
+    console.error('❌ Blob 저장 오류:', error.message);
+    console.error('오류 상세:', error);
   }
 }
 
 // 데이터베이스 로드 (Vercel Blob)
 async function loadDatabase() {
   try {
+    console.log('=== Blob 로드 시작 ===');
     const { blobs } = await list({ prefix: 'osuda-data.json' });
+    console.log('찾은 Blob 파일 수:', blobs.length);
+    
     if (blobs.length > 0) {
+      console.log('Blob 파일 정보:', blobs[0]);
       const response = await fetch(blobs[0].url);
+      console.log('HTTP 응답 상태:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
         posts = data;
-        console.log('데이터가 Vercel Blob에서 로드되었습니다');
+        console.log('✅ 데이터가 Vercel Blob에서 로드되었습니다');
+        console.log('로드된 게시물 수:', posts.length);
       } else {
         posts = [];
-        console.log('저장된 데이터가 없습니다');
+        console.log('❌ HTTP 응답 오류:', response.status);
       }
     } else {
       posts = [];
-      console.log('저장된 데이터가 없습니다');
+      console.log('📝 저장된 데이터가 없습니다 (첫 실행)');
     }
+    console.log('=== Blob 로드 완료 ===');
   } catch (error) {
-    console.error('Blob 로드 오류:', error.message);
+    console.error('❌ Blob 로드 오류:', error.message);
+    console.error('오류 상세:', error);
     posts = [];
   }
 }
@@ -82,6 +101,10 @@ initDatabase();
 // API 라우트들
 // 모든 게시물 조회
 app.get('/api/posts', (req, res) => {
+  console.log('=== 게시물 조회 요청 ===');
+  console.log('현재 메모리의 게시물 수:', posts.length);
+  console.log('조회 파라미터:', req.query);
+  
   const { search, keyword, sort = 'newest', date } = req.query;
   let filteredPosts = [...posts];
 
@@ -114,6 +137,9 @@ app.get('/api/posts', (req, res) => {
     return sort === 'oldest' ? dateA - dateB : dateB - dateA;
   });
 
+  console.log('필터링된 게시물 수:', filteredPosts.length);
+  console.log('=== 게시물 조회 완료 ===');
+  
   res.json(filteredPosts);
 });
 
@@ -132,9 +158,14 @@ app.get('/api/posts/:id', (req, res) => {
 
 // 게시물 생성
 app.post('/api/posts', async (req, res) => {
+  console.log('=== 게시물 생성 요청 ===');
+  console.log('요청 데이터:', req.body);
+  console.log('생성 전 게시물 수:', posts.length);
+  
   const { content, keywords, manual_date } = req.body;
   
   if (!content) {
+    console.log('❌ 내용이 없어서 생성 실패');
     res.status(400).json({ error: '내용은 필수입니다.' });
     return;
   }
@@ -147,8 +178,13 @@ app.post('/api/posts', async (req, res) => {
     manual_date: manual_date || null
   };
 
+  console.log('생성할 게시물:', newPost);
   posts.push(newPost);
+  console.log('생성 후 게시물 수:', posts.length);
+  
+  console.log('Blob에 저장 시작...');
   await saveDatabase();
+  console.log('=== 게시물 생성 완료 ===');
   
   res.json({ id: newPost.id, message: '게시물이 생성되었습니다.' });
 });
