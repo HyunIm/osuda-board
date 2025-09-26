@@ -1,773 +1,773 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌅 오수다 - 아침 미팅 기록</title>
-    <style>
-/* 기본 스타일 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>🌅 오수다 - 아침 미팅 기록</title>
+        <style>
+    /* 기본 스타일 */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+    }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* 헤더 */
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-    pointer-events: none;
-}
-
-.header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 1;
-}
-
-.subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    position: relative;
-    z-index: 1;
-}
-
-/* 네비게이션 탭 */
-.nav-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 5px;
-    backdrop-filter: blur(10px);
-}
-
-.nav-tab {
-    background: transparent;
-    border: none;
-    padding: 12px 24px;
-    margin: 0 5px;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-}
-
-.nav-tab:hover {
-    background: rgba(255,255,255,0.2);
-}
-
-.nav-tab.active {
-    background: white;
-    color: #667eea;
-    font-weight: bold;
-}
-
-/* 검색 및 필터 */
-.search-filter {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.search-box {
-    display: flex;
-    flex: 1;
-    min-width: 250px;
-}
-
-.search-box input {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px 0 0 8px;
-    font-size: 1rem;
-}
-
-.search-box button {
-    padding: 12px 20px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 0 8px 8px 0;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.search-box button:hover {
-    background: #5a6fd8;
-}
-
-.filter-box {
-    display: flex;
-    gap: 10px;
-}
-
-.filter-box select {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: white;
-    font-size: 1rem;
-    min-width: 120px;
-}
-
-/* 뷰 컨텐츠 */
-.view-content {
-    display: none;
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
-}
-
-.view-content.active {
-    display: block;
-}
-
-/* 날짜 선택기 */
-.date-selector, .week-selector, .month-selector {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 10px;
-}
-
-.date-selector button, .week-selector button, .month-selector button {
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.date-selector button:hover, .week-selector button:hover, .month-selector button:hover {
-    background: #5a6fd8;
-}
-
-.date-selector input {
-    padding: 10px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-/* 게시물 목록 */
-.posts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.post-item {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-left: 4px solid #667eea;
-}
-
-.post-item:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.post-content {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
-.post-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-.post-keywords {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-}
-
-.keyword-tag {
-    background: #667eea;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-}
-
-/* 주간 캘린더 */
-.weekly-calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.weekday-header {
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.weekday-cell {
-    min-height: 100px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.weekday-cell:hover {
-    background: #e9ecef;
-}
-
-.weekday-cell.has-posts {
-    background: #e3f2fd;
-    border: 2px solid #2196f3;
-}
-
-.weekday-preview {
-    font-size: 0.8rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* 월간 캘린더 */
-.monthly-calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-top: 20px;
-}
-
-.calendar-header {
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.calendar-day {
-    min-height: 80px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.calendar-day:hover {
-    background: #e9ecef;
-}
-
-.calendar-day.has-posts {
-    background: #e3f2fd;
-    border: 2px solid #2196f3;
-}
-
-.calendar-day.has-posts::after {
-    content: '●';
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    color: #2196f3;
-    font-size: 1.2rem;
-}
-
-.post-count {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: #2196f3;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: bold;
-}
-
-/* 새 게시물 버튼 */
-.add-post-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #667eea;
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-.add-post-btn:hover {
-    background: #5a6fd8;
-    transform: scale(1.1);
-}
-
-/* 모달 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 5% auto;
-    padding: 0;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 25px;
-    border-bottom: 1px solid #e9ecef;
-    background: #f8f9fa;
-    border-radius: 15px 15px 0 0;
-}
-
-.modal-header h3 {
-    margin: 0;
-    color: #333;
-}
-
-.close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close:hover {
-    color: #000;
-}
-
-/* 폼 스타일 */
-#postForm {
-    padding: 25px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
-}
-
-.form-group input, .form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus, .form-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.date-options {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 10px;
-}
-
-.date-options label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: normal;
-    cursor: pointer;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 30px;
-}
-
-.form-actions button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-#cancelBtn {
-    background: #6c757d;
-    color: white;
-}
-
-#cancelBtn:hover {
-    background: #5a6268;
-}
-
-#saveBtn {
-    background: #667eea;
-    color: white;
-}
-
-#saveBtn:hover {
-    background: #5a6fd8;
-}
-
-/* 게시물 상세 */
-.post-detail {
-    padding: 25px;
-}
-
-.detail-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    padding: 20px 25px;
-    border-top: 1px solid #e9ecef;
-    background: #f8f9fa;
-    border-radius: 0 0 15px 15px;
-}
-
-.detail-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-#editBtn {
-    background: #28a745;
-    color: white;
-}
-
-#editBtn:hover {
-    background: #218838;
-}
-
-#deleteBtn {
-    background: #dc3545;
-    color: white;
-}
-
-#deleteBtn:hover {
-    background: #c82333;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
     .container {
-        padding: 10px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
-    
+
+    /* 헤더 */
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
     .header h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 1;
     }
-    
+
+    .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* 네비게이션 탭 */
+    .nav-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 5px;
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-tab {
+        background: transparent;
+        border: none;
+        padding: 12px 24px;
+        margin: 0 5px;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .nav-tab:hover {
+        background: rgba(255,255,255,0.2);
+    }
+
+    .nav-tab.active {
+        background: white;
+        color: #667eea;
+        font-weight: bold;
+    }
+
+    /* 검색 및 필터 */
     .search-filter {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .search-box {
-        min-width: auto;
-    }
-    
-    .filter-box {
-        flex-direction: row;
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
         flex-wrap: wrap;
-        gap: 10px;
         align-items: center;
     }
-    
-    .filter-box > div {
+
+    .search-box {
+        display: flex;
         flex: 1;
+        min-width: 250px;
+    }
+
+    .search-box input {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px 0 0 8px;
+        font-size: 1rem;
+    }
+
+    .search-box button {
+        padding: 12px 20px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .search-box button:hover {
+        background: #5a6fd8;
+    }
+
+    .filter-box {
+        display: flex;
+        gap: 10px;
+    }
+
+    .filter-box select {
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: white;
+        font-size: 1rem;
         min-width: 120px;
     }
-    
-    .filter-box select {
-        font-size: 0.9rem;
-        padding: 8px;
+
+    /* 뷰 컨텐츠 */
+    .view-content {
+        display: none;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
     }
-    
-    .filter-box label {
-        font-size: 0.9rem;
-        margin-bottom: 5px;
+
+    .view-content.active {
+        display: block;
     }
-    
-    .nav-tabs {
-        flex-direction: row;
+
+    /* 날짜 선택기 */
+    .date-selector, .week-selector, .month-selector {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .date-selector button, .week-selector button, .month-selector button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .date-selector button:hover, .week-selector button:hover, .month-selector button:hover {
+        background: #5a6fd8;
+    }
+
+    .date-selector input {
+        padding: 10px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    /* 게시물 목록 */
+    .posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .post-item {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-left: 4px solid #667eea;
+    }
+
+    .post-item:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .post-content {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+
+    .post-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .post-keywords {
+        display: flex;
         gap: 5px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding: 5px;
-        -webkit-overflow-scrolling: touch;
+        flex-wrap: wrap;
     }
-    
-    .nav-tab {
-        margin: 0;
-        flex-shrink: 0;
-        white-space: nowrap;
-        min-width: 80px;
-        text-align: center;
-    }
-    
-    .weekly-calendar, .monthly-calendar {
-        grid-template-columns: repeat(7, 1fr);
-        gap: 2px;
-    }
-    
-    .weekday-cell, .calendar-day {
-        min-height: 60px;
+
+    .keyword-tag {
+        background: #667eea;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
         font-size: 0.8rem;
     }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
+
+    /* 주간 캘린더 */
+    .weekly-calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        margin-top: 20px;
     }
-    
-    .add-post-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
+
+    .weekday-header {
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .weekday-cell {
+        min-height: 100px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .weekday-cell:hover {
+        background: #e9ecef;
+    }
+
+    .weekday-cell.has-posts {
+        background: #e3f2fd;
+        border: 2px solid #2196f3;
+    }
+
+    .weekday-preview {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    /* 월간 캘린더 */
+    .monthly-calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        margin-top: 20px;
+    }
+
+    .calendar-header {
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .calendar-day {
+        min-height: 80px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .calendar-day:hover {
+        background: #e9ecef;
+    }
+
+    .calendar-day.has-posts {
+        background: #e3f2fd;
+        border: 2px solid #2196f3;
+    }
+
+    .calendar-day.has-posts::after {
+        content: '●';
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: #2196f3;
         font-size: 1.2rem;
     }
-}
 
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .subtitle {
-        font-size: 1rem;
-    }
-    
-    .post-item {
-        padding: 15px;
-    }
-    
-    .post-content {
-        font-size: 1rem;
-    }
-    
-    .weekly-calendar, .monthly-calendar {
-        gap: 1px;
-    }
-    
-    .weekday-cell, .calendar-day {
-        min-height: 50px;
-        padding: 5px;
+    .post-count {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background: #2196f3;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 0.7rem;
+        font-weight: bold;
     }
-}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- 헤더 -->
-        <header class="header">
-            <h1>🌅 오수다</h1>
-            <p class="subtitle">✨ 아침 미팅 기록 & 일정 관리</p>
-        </header>
 
-        <!-- 네비게이션 -->
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-view="daily">일간</button>
-            <button class="nav-tab" data-view="weekly">주간</button>
-            <button class="nav-tab" data-view="monthly">월간</button>
-        </nav>
+    /* 새 게시물 버튼 */
+    .add-post-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #667eea;
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
 
-        <!-- 검색 및 필터 -->
-        <div class="search-filter">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="내용 검색...">
-                <button id="searchBtn">검색</button>
-            </div>
-            <div class="filter-box">
-                <select id="keywordFilter">
-                    <option value="">키워드 선택</option>
-                </select>
-                <select id="sortFilter">
-                    <option value="newest">최신순</option>
-                    <option value="oldest">오래된순</option>
-                </select>
-            </div>
-        </div>
+    .add-post-btn:hover {
+        background: #5a6fd8;
+        transform: scale(1.1);
+    }
 
-        <!-- 일간 뷰 -->
-        <div id="dailyView" class="view-content active">
-            <div class="date-selector">
-                <button id="prevDay">◀</button>
-                <input type="date" id="dailyDate" value="">
-                <button id="nextDay">▶</button>
-            </div>
-            <div class="posts-list" id="dailyPosts"></div>
-        </div>
+    /* 모달 */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+    }
 
-        <!-- 주간 뷰 -->
-        <div id="weeklyView" class="view-content">
-            <div class="week-selector">
-                <button id="prevWeek">◀</button>
-                <span id="weekRange"></span>
-                <button id="nextWeek">▶</button>
-            </div>
-            <div class="weekly-calendar" id="weeklyCalendar"></div>
-        </div>
+    .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
 
-        <!-- 월간 뷰 -->
-        <div id="monthlyView" class="view-content">
-            <div class="month-selector">
-                <button id="prevMonth">◀</button>
-                <span id="monthYear"></span>
-                <button id="nextMonth">▶</button>
-            </div>
-            <div class="monthly-calendar" id="monthlyCalendar"></div>
-        </div>
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        border-bottom: 1px solid #e9ecef;
+        background: #f8f9fa;
+        border-radius: 15px 15px 0 0;
+    }
 
-        <!-- 게시물 작성 버튼 -->
-        <button class="add-post-btn" id="addPostBtn">📝</button>
+    .modal-header h3 {
+        margin: 0;
+        color: #333;
+    }
 
-        <!-- 게시물 작성/수정 모달 -->
-        <div id="postModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modalTitle">📝 새 기록 작성</h3>
-                    <span class="close">&times;</span>
+    .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close:hover {
+        color: #000;
+    }
+
+    /* 폼 스타일 */
+    #postForm {
+        padding: 25px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .date-options {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+
+    .date-options label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .form-actions button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    #cancelBtn {
+        background: #6c757d;
+        color: white;
+    }
+
+    #cancelBtn:hover {
+        background: #5a6268;
+    }
+
+    #saveBtn {
+        background: #667eea;
+        color: white;
+    }
+
+    #saveBtn:hover {
+        background: #5a6fd8;
+    }
+
+    /* 게시물 상세 */
+    .post-detail {
+        padding: 25px;
+    }
+
+    .detail-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        padding: 20px 25px;
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
+        border-radius: 0 0 15px 15px;
+    }
+
+    .detail-actions button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    #editBtn {
+        background: #28a745;
+        color: white;
+    }
+
+    #editBtn:hover {
+        background: #218838;
+    }
+
+    #deleteBtn {
+        background: #dc3545;
+        color: white;
+    }
+
+    #deleteBtn:hover {
+        background: #c82333;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+        }
+        
+        .search-filter {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .search-box {
+            min-width: auto;
+        }
+        
+        .filter-box {
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .filter-box > div {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .filter-box select {
+            font-size: 0.9rem;
+            padding: 8px;
+        }
+        
+        .filter-box label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .nav-tabs {
+            flex-direction: row;
+            gap: 5px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-tab {
+            margin: 0;
+            flex-shrink: 0;
+            white-space: nowrap;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .weekly-calendar, .monthly-calendar {
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        
+        .weekday-cell, .calendar-day {
+            min-height: 60px;
+            font-size: 0.8rem;
+        }
+        
+        .modal-content {
+            width: 95%;
+            margin: 10% auto;
+        }
+        
+        .add-post-btn {
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+        }
+        
+        .post-item {
+            padding: 15px;
+        }
+        
+        .post-content {
+            font-size: 1rem;
+        }
+        
+        .weekly-calendar, .monthly-calendar {
+            gap: 1px;
+        }
+        
+        .weekday-cell, .calendar-day {
+            min-height: 50px;
+            padding: 5px;
+            font-size: 0.7rem;
+        }
+    }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- 헤더 -->
+            <header class="header">
+                <h1>🌅 오수다</h1>
+                <p class="subtitle">✨ 아침 미팅 기록 & 일정 관리</p>
+            </header>
+
+            <!-- 네비게이션 -->
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-view="daily">일간</button>
+                <button class="nav-tab" data-view="weekly">주간</button>
+                <button class="nav-tab" data-view="monthly">월간</button>
+            </nav>
+
+            <!-- 검색 및 필터 -->
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="내용 검색...">
+                    <button id="searchBtn">검색</button>
                 </div>
-                <form id="postForm">
-                    <div class="form-group">
-                        <label for="postContent">내용 *</label>
-                        <textarea id="postContent" rows="4" required></textarea>
+                <div class="filter-box">
+                    <select id="keywordFilter">
+                        <option value="">키워드 선택</option>
+                    </select>
+                    <select id="sortFilter">
+                        <option value="newest">최신순</option>
+                        <option value="oldest">오래된순</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 일간 뷰 -->
+            <div id="dailyView" class="view-content active">
+                <div class="date-selector">
+                    <button id="prevDay">◀</button>
+                    <input type="date" id="dailyDate" value="">
+                    <button id="nextDay">▶</button>
+                </div>
+                <div class="posts-list" id="dailyPosts"></div>
+            </div>
+
+            <!-- 주간 뷰 -->
+            <div id="weeklyView" class="view-content">
+                <div class="week-selector">
+                    <button id="prevWeek">◀</button>
+                    <span id="weekRange"></span>
+                    <button id="nextWeek">▶</button>
+                </div>
+                <div class="weekly-calendar" id="weeklyCalendar"></div>
+            </div>
+
+            <!-- 월간 뷰 -->
+            <div id="monthlyView" class="view-content">
+                <div class="month-selector">
+                    <button id="prevMonth">◀</button>
+                    <span id="monthYear"></span>
+                    <button id="nextMonth">▶</button>
+                </div>
+                <div class="monthly-calendar" id="monthlyCalendar"></div>
+            </div>
+
+            <!-- 게시물 작성 버튼 -->
+            <button class="add-post-btn" id="addPostBtn">📝</button>
+
+            <!-- 게시물 작성/수정 모달 -->
+            <div id="postModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="modalTitle">📝 새 기록 작성</h3>
+                        <span class="close">&times;</span>
                     </div>
-                    <div class="form-group">
-                        <label for="postKeywords">키워드 (콤마로 구분)</label>
-                        <input type="text" id="postKeywords" placeholder="예: 회의, 프로젝트, 계획">
-                    </div>
-                    <div class="form-group">
-                        <label for="postDate">등록일자</label>
-                        <div class="date-options">
-                            <label>
-                                <input type="radio" name="dateOption" value="auto" checked>
-                                자동 (현재 시간)
-                            </label>
-                            <label>
-                                <input type="radio" name="dateOption" value="manual">
-                                수동 선택
-                            </label>
+                    <form id="postForm">
+                        <div class="form-group">
+                            <label for="postContent">내용 *</label>
+                            <textarea id="postContent" rows="4" required></textarea>
                         </div>
-                        <input type="datetime-local" id="postDate" disabled>
+                        <div class="form-group">
+                            <label for="postKeywords">키워드 (콤마로 구분)</label>
+                            <input type="text" id="postKeywords" placeholder="예: 회의, 프로젝트, 계획">
+                        </div>
+                        <div class="form-group">
+                            <label for="postDate">등록일자</label>
+                            <div class="date-options">
+                                <label>
+                                    <input type="radio" name="dateOption" value="auto" checked>
+                                    자동
+                                </label>
+                                <label>
+                                    <input type="radio" name="dateOption" value="manual">
+                                    날짜 선택
+                                </label>
+                            </div>
+                            <input type="datetime-local" id="postDate" disabled>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="cancelBtn">취소</button>
+                            <button type="submit" id="saveBtn">저장</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 게시물 상세 보기 모달 -->
+            <div id="detailModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📋 기록 상세</h3>
+                        <span class="close">&times;</span>
                     </div>
-                    <div class="form-actions">
-                        <button type="button" id="cancelBtn">취소</button>
-                        <button type="submit" id="saveBtn">저장</button>
+                    <div class="post-detail" id="postDetail">
+                        <!-- 게시물 상세 내용이 여기에 표시됩니다 -->
                     </div>
-                </form>
+                    <div class="detail-actions">
+                        <button id="editBtn">수정</button>
+                        <button id="deleteBtn">삭제</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 게시물 상세 보기 모달 -->
-        <div id="detailModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>📋 기록 상세</h3>
-                    <span class="close">&times;</span>
-                </div>
-                <div class="post-detail" id="postDetail">
-                    <!-- 게시물 상세 내용이 여기에 표시됩니다 -->
-                </div>
-                <div class="detail-actions">
-                    <button id="editBtn">수정</button>
-                    <button id="deleteBtn">삭제</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="/script.js"></script>
-</body>
-</html>
+        <script src="/script.js"></script>
+    </body>
+    </html>
