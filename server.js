@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
-const fs = require('fs');
+const { put, list } = require('@vercel/blob');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,33 +22,57 @@ app.use(express.static('public', {
   }
 }));
 
-// JSON 파일 기반 데이터베이스 (Vercel 환경 대응)
-const DB_FILE = process.env.NODE_ENV === 'production' ? '/tmp/osuda.json' : 'osuda.json';
+// Vercel Blob 기반 데이터베이스
 let posts = [];
 
 // 데이터베이스 초기화
-function initDatabase() {
+async function initDatabase() {
   try {
-    if (fs.existsSync(DB_FILE)) {
-      const data = fs.readFileSync(DB_FILE, 'utf8');
-      posts = JSON.parse(data);
-    } else {
-      posts = [];
-      saveDatabase();
-    }
-    console.log('JSON 데이터베이스가 초기화되었습니다.');
+    await loadDatabase();
+    console.log('Vercel Blob 데이터베이스가 초기화되었습니다.');
+    console.log('현재 게시물 수:', posts.length);
   } catch (error) {
     console.error('데이터베이스 초기화 오류:', error.message);
     posts = [];
   }
 }
 
-// 데이터베이스 저장
-function saveDatabase() {
+// 데이터베이스 저장 (Vercel Blob)
+async function saveDatabase() {
   try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(posts, null, 2));
+    const data = JSON.stringify(posts, null, 2);
+    const blob = await put('osuda-data.json', data, {
+      access: 'public',
+      contentType: 'application/json'
+    });
+    console.log('데이터가 Vercel Blob에 저장되었습니다:', blob.url);
+    console.log('현재 게시물 수:', posts.length);
   } catch (error) {
-    console.error('데이터베이스 저장 오류:', error.message);
+    console.error('Blob 저장 오류:', error.message);
+  }
+}
+
+// 데이터베이스 로드 (Vercel Blob)
+async function loadDatabase() {
+  try {
+    const { blobs } = await list({ prefix: 'osuda-data.json' });
+    if (blobs.length > 0) {
+      const response = await fetch(blobs[0].url);
+      if (response.ok) {
+        const data = await response.json();
+        posts = data;
+        console.log('데이터가 Vercel Blob에서 로드되었습니다');
+      } else {
+        posts = [];
+        console.log('저장된 데이터가 없습니다');
+      }
+    } else {
+      posts = [];
+      console.log('저장된 데이터가 없습니다');
+    }
+  } catch (error) {
+    console.error('Blob 로드 오류:', error.message);
+    posts = [];
   }
 }
 
@@ -107,7 +131,7 @@ app.get('/api/posts/:id', (req, res) => {
 });
 
 // 게시물 생성
-app.post('/api/posts', (req, res) => {
+app.post('/api/posts', async (req, res) => {
   const { content, keywords, manual_date } = req.body;
   
   if (!content) {
@@ -124,13 +148,13 @@ app.post('/api/posts', (req, res) => {
   };
 
   posts.push(newPost);
-  saveDatabase();
+  await saveDatabase();
   
   res.json({ id: newPost.id, message: '게시물이 생성되었습니다.' });
 });
 
 // 게시물 수정
-app.put('/api/posts/:id', (req, res) => {
+app.put('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
   const { content, keywords, manual_date } = req.body;
   
@@ -153,12 +177,12 @@ app.put('/api/posts/:id', (req, res) => {
     manual_date: manual_date || null
   };
 
-  saveDatabase();
+  await saveDatabase();
   res.json({ message: '게시물이 수정되었습니다.' });
 });
 
 // 게시물 삭제
-app.delete('/api/posts/:id', (req, res) => {
+app.delete('/api/posts/:id', async (req, res) => {
   const { id } = req.params;
   const postIndex = posts.findIndex(p => p.id === parseInt(id));
   
@@ -168,7 +192,7 @@ app.delete('/api/posts/:id', (req, res) => {
   }
 
   posts.splice(postIndex, 1);
-  saveDatabase();
+  await saveDatabase();
   
   res.json({ message: '게시물이 삭제되었습니다.' });
 });
@@ -235,8 +259,8 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Graceful shutdown
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   console.log('서버가 종료됩니다.');
-  saveDatabase();
+  await saveDatabase();
   process.exit(0);
 });
