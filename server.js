@@ -47,14 +47,16 @@ async function saveDatabase() {
     const data = JSON.stringify(posts, null, 2);
     console.log('JSON 데이터 크기:', data.length, 'bytes');
     
+    // 고정된 파일명 사용 (덮어쓰기)
     const blob = await put('osuda-data.json', data, {
       access: 'public',
-      contentType: 'application/json'
+      contentType: 'application/json',
+      addRandomSuffix: false  // 랜덤 접미사 제거
     });
     
     console.log('✅ 데이터가 Vercel Blob에 저장되었습니다!');
     console.log('Blob URL:', blob.url);
-    console.log('Blob 크기:', blob.size, 'bytes');
+    console.log('Blob 크기:', blob.size || 'N/A', 'bytes');
     console.log('=== Blob 저장 완료 ===');
   } catch (error) {
     console.error('❌ Blob 저장 오류:', error.message);
@@ -66,12 +68,17 @@ async function saveDatabase() {
 async function loadDatabase() {
   try {
     console.log('=== Blob 로드 시작 ===');
-    const { blobs } = await list({ prefix: 'osuda-data.json' });
+    const { blobs } = await list({ prefix: 'osuda-data' });
     console.log('찾은 Blob 파일 수:', blobs.length);
+    console.log('Blob 파일 목록:', blobs.map(b => b.pathname));
     
     if (blobs.length > 0) {
-      console.log('Blob 파일 정보:', blobs[0]);
-      const response = await fetch(blobs[0].url);
+      // 가장 최근 파일 찾기 (정확한 파일명으로)
+      const targetBlob = blobs.find(blob => blob.pathname === 'osuda-data.json') || blobs[0];
+      console.log('로드할 Blob 파일:', targetBlob.pathname);
+      console.log('Blob 파일 정보:', targetBlob);
+      
+      const response = await fetch(targetBlob.url);
       console.log('HTTP 응답 상태:', response.status);
       
       if (response.ok) {
