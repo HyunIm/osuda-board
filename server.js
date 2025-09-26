@@ -11,7 +11,16 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static('public', { 
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    }
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    }
+  }
+}));
 
 // JSON 파일 기반 데이터베이스
 const DB_FILE = 'osuda.json';
@@ -203,6 +212,15 @@ app.get('/api/stats', (req, res) => {
   })).sort((a, b) => a.date.localeCompare(b.date));
 
   res.json(result);
+});
+
+// 정적 파일 라우트
+app.get('/styles.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'styles.css'));
+});
+
+app.get('/script.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'script.js'));
 });
 
 // 메인 페이지 서빙
