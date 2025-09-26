@@ -416,10 +416,10 @@ function openPostModal(postId = null) {
     editingPostId = postId;
     
     if (postId) {
-        modalTitle.textContent = '기록 수정';
+        modalTitle.textContent = '✏️ 기록 수정';
         loadPostForEdit(postId);
     } else {
-        modalTitle.textContent = '새 기록 작성';
+        modalTitle.textContent = '📝 새 기록 작성';
         postForm.reset();
         postDate.disabled = true;
         document.querySelector('input[name="dateOption"][value="auto"]').checked = true;
