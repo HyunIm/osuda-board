@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오수다 - 아침 미팅 기록</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <h1>오수다</h1>
+            <p class="subtitle">아침 미팅 기록</p>
+        </header>
+
+        <!-- 네비게이션 -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-view="daily">일간</button>
+            <button class="nav-tab" data-view="weekly">주간</button>
+            <button class="nav-tab" data-view="monthly">월간</button>
+        </nav>
+
+        <!-- 검색 및 필터 -->
+        <div class="search-filter">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="내용 검색...">
+                <button id="searchBtn">검색</button>
+            </div>
+            <div class="filter-box">
+                <select id="keywordFilter">
+                    <option value="">키워드 선택</option>
+                </select>
+                <select id="sortFilter">
+                    <option value="newest">최신순</option>
+                    <option value="oldest">오래된순</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 일간 뷰 -->
+        <div id="dailyView" class="view-content active">
+            <div class="date-selector">
+                <button id="prevDay">◀</button>
+                <input type="date" id="dailyDate" value="">
+                <button id="nextDay">▶</button>
+            </div>
+            <div class="posts-list" id="dailyPosts"></div>
+        </div>
+
+        <!-- 주간 뷰 -->
+        <div id="weeklyView" class="view-content">
+            <div class="week-selector">
+                <button id="prevWeek">◀</button>
+                <span id="weekRange"></span>
+                <button id="nextWeek">▶</button>
+            </div>
+            <div class="weekly-calendar" id="weeklyCalendar"></div>
+        </div>
+
+        <!-- 월간 뷰 -->
+        <div id="monthlyView" class="view-content">
+            <div class="month-selector">
+                <button id="prevMonth">◀</button>
+                <span id="monthYear"></span>
+                <button id="nextMonth">▶</button>
+            </div>
+            <div class="monthly-calendar" id="monthlyCalendar"></div>
+        </div>
+
+        <!-- 게시물 작성 버튼 -->
+        <button class="add-post-btn" id="addPostBtn">+ 새 기록</button>
+
+        <!-- 게시물 작성/수정 모달 -->
+        <div id="postModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">새 기록 작성</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <form id="postForm">
+                    <div class="form-group">
+                        <label for="postContent">내용 *</label>
+                        <textarea id="postContent" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="postKeywords">키워드 (콤마로 구분)</label>
+                        <input type="text" id="postKeywords" placeholder="예: 회의, 프로젝트, 계획">
+                    </div>
+                    <div class="form-group">
+                        <label for="postDate">등록일자</label>
+                        <div class="date-options">
+                            <label>
+                                <input type="radio" name="dateOption" value="auto" checked>
+                                자동 (현재 시간)
+                            </label>
+                            <label>
+                                <input type="radio" name="dateOption" value="manual">
+                                수동 선택
+                            </label>
+                        </div>
+                        <input type="datetime-local" id="postDate" disabled>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelBtn">취소</button>
+                        <button type="submit" id="saveBtn">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 게시물 상세 보기 모달 -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>기록 상세</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="post-detail" id="postDetail">
+                    <!-- 게시물 상세 내용이 여기에 표시됩니다 -->
+                </div>
+                <div class="detail-actions">
+                    <button id="editBtn">수정</button>
+                    <button id="deleteBtn">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
