@@ -455,11 +455,12 @@
     .date-options label {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 3px;
         font-weight: normal;
         cursor: pointer;
         white-space: nowrap;
         flex-shrink: 0;
+        font-size: 0.9rem;
     }
 
     .form-actions {
@@ -581,16 +582,19 @@
     
     .date-options {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
     
     .date-options label {
-        font-size: 0.9rem;
-        padding: 8px 12px;
+        font-size: 0.85rem;
+        padding: 6px 10px;
         background: rgba(255,255,255,0.1);
         border-radius: 6px;
         border: 1px solid rgba(255,255,255,0.2);
         transition: all 0.2s ease;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
     }
     
     .date-options label:hover {
@@ -599,6 +603,13 @@
     
     .date-options input[type="radio"]:checked + span {
         font-weight: bold;
+    }
+    
+    .date-options input[type="radio"] {
+        width: 14px;
+        height: 14px;
+        margin: 0;
+        flex-shrink: 0;
     }
         
         .nav-tabs {
