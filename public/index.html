@@ -556,16 +556,42 @@ body {
     }
     
     .filter-box {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .filter-box > div {
+        flex: 1;
+        min-width: 120px;
+    }
+    
+    .filter-box select {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    
+    .filter-box label {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
     }
     
     .nav-tabs {
-        flex-direction: column;
+        flex-direction: row;
         gap: 5px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 5px;
+        -webkit-overflow-scrolling: touch;
     }
     
     .nav-tab {
         margin: 0;
+        flex-shrink: 0;
+        white-space: nowrap;
+        min-width: 80px;
+        text-align: center;
     }
     
     .weekly-calendar, .monthly-calendar {
