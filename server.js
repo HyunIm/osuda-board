@@ -22,8 +22,8 @@ app.use(express.static('public', {
   }
 }));
 
-// JSON 파일 기반 데이터베이스
-const DB_FILE = 'osuda.json';
+// JSON 파일 기반 데이터베이스 (Vercel 환경 대응)
+const DB_FILE = process.env.NODE_ENV === 'production' ? '/tmp/osuda.json' : 'osuda.json';
 let posts = [];
 
 // 데이터베이스 초기화
